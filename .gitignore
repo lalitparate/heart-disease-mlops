@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.so
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Models (keep .gitkeep)
+models/*.joblib
+models/*.pkl
+models/*.onnx
+models/plots/
+!models/.gitkeep
+
+# Data
+data/heart.csv
+data/raw_cleveland.data
+*.csv
+
+# Screenshots
+screenshots/
+!screenshots/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+
+# Coverage
+.coverage
+coverage.xml
+htmlcov/
+
+# Env files
+.env
+*.env
