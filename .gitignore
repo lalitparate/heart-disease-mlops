@@ -54,3 +54,7 @@ htmlcov/
 # Env files
 .env
 *.env
+minikube-linux-amd64
+*.iso
+*.bin
+venv/
