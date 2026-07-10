@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 # ── Lifespan: pre-load model at startup ──────────────────────────────────────
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting up — loading model...")
