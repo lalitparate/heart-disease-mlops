@@ -12,34 +12,41 @@ import pandas as pd
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.preprocess import (
-    build_preprocessor, load_data, split_features_target,
-    ALL_FEATURES, NUMERIC_FEATURES, CATEGORICAL_FEATURES, TARGET_COL
+    build_preprocessor,
+    load_data,
+    split_features_target,
+    ALL_FEATURES,
+    NUMERIC_FEATURES,
+    CATEGORICAL_FEATURES,
+    TARGET_COL,
 )
 
-
 # ── Fixtures ──────────────────────────────────────────────────────────────────
+
 
 @pytest.fixture
 def sample_df():
     """Small synthetic DataFrame mimicking the heart disease dataset."""
     np.random.seed(42)
     n = 50
-    return pd.DataFrame({
-        "age": np.random.randint(30, 75, n).astype(float),
-        "sex": np.random.randint(0, 2, n).astype(float),
-        "cp": np.random.randint(0, 4, n).astype(float),
-        "trestbps": np.random.randint(90, 200, n).astype(float),
-        "chol": np.random.randint(150, 400, n).astype(float),
-        "fbs": np.random.randint(0, 2, n).astype(float),
-        "restecg": np.random.randint(0, 3, n).astype(float),
-        "thalach": np.random.randint(80, 200, n).astype(float),
-        "exang": np.random.randint(0, 2, n).astype(float),
-        "oldpeak": np.random.uniform(0, 5, n).round(1),
-        "slope": np.random.randint(0, 3, n).astype(float),
-        "ca": np.random.randint(0, 4, n).astype(float),
-        "thal": np.random.choice([1.0, 2.0, 3.0], n),
-        "target": np.random.randint(0, 2, n),
-    })
+    return pd.DataFrame(
+        {
+            "age": np.random.randint(30, 75, n).astype(float),
+            "sex": np.random.randint(0, 2, n).astype(float),
+            "cp": np.random.randint(0, 4, n).astype(float),
+            "trestbps": np.random.randint(90, 200, n).astype(float),
+            "chol": np.random.randint(150, 400, n).astype(float),
+            "fbs": np.random.randint(0, 2, n).astype(float),
+            "restecg": np.random.randint(0, 3, n).astype(float),
+            "thalach": np.random.randint(80, 200, n).astype(float),
+            "exang": np.random.randint(0, 2, n).astype(float),
+            "oldpeak": np.random.uniform(0, 5, n).round(1),
+            "slope": np.random.randint(0, 3, n).astype(float),
+            "ca": np.random.randint(0, 4, n).astype(float),
+            "thal": np.random.choice([1.0, 2.0, 3.0], n),
+            "target": np.random.randint(0, 2, n),
+        }
+    )
 
 
 @pytest.fixture
@@ -53,6 +60,7 @@ def sample_df_with_missing(sample_df):
 
 
 # ── Column tests ──────────────────────────────────────────────────────────────
+
 
 def test_all_features_defined():
     assert len(ALL_FEATURES) == 13
@@ -69,6 +77,7 @@ def test_features_cover_all():
 
 # ── split_features_target ─────────────────────────────────────────────────────
 
+
 def test_split_features_target(sample_df):
     X, y = split_features_target(sample_df)
     assert list(X.columns) == ALL_FEATURES
@@ -77,6 +86,7 @@ def test_split_features_target(sample_df):
 
 
 # ── Preprocessor output shape ─────────────────────────────────────────────────
+
 
 def test_preprocessor_output_shape(sample_df):
     X, _ = split_features_target(sample_df)
@@ -103,6 +113,7 @@ def test_preprocessor_transform_single_row(sample_df):
 
 
 # ── Data loading ──────────────────────────────────────────────────────────────
+
 
 def test_load_data_columns(tmp_path, sample_df):
     path = tmp_path / "heart.csv"
