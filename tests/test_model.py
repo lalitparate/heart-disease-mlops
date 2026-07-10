@@ -3,6 +3,11 @@ Unit tests for model training and inference.
 Run: pytest tests/ -v
 """
 
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from src.evaluate import compute_metrics
+from src.preprocess import build_preprocessor, ALL_FEATURES
 import os
 import sys
 import pytest
@@ -11,11 +16,6 @@ import joblib
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.preprocess import build_preprocessor, ALL_FEATURES
-from src.evaluate import compute_metrics
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-import pandas as pd
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────

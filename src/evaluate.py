@@ -2,17 +2,17 @@
 Evaluation utilities — metrics, plots, and reporting helpers.
 """
 
-import os
-import numpy as np
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score,
     f1_score, roc_auc_score, confusion_matrix,
     roc_curve, classification_report
 )
+import seaborn as sns
+import matplotlib.pyplot as plt
+import os
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
 
 PLOTS_DIR = os.path.join("models", "plots")
 os.makedirs(PLOTS_DIR, exist_ok=True)
@@ -44,7 +44,8 @@ def plot_confusion_matrix(y_true, y_pred, model_name: str, save: bool = True) ->
         yticklabels=["No Disease", "Disease"], ax=ax
     )
     ax.set_title(f"Confusion Matrix — {model_name}")
-    ax.set_ylabel("Actual"); ax.set_xlabel("Predicted")
+    ax.set_ylabel("Actual")
+    ax.set_xlabel("Predicted")
     plt.tight_layout()
     path = os.path.join(PLOTS_DIR, f"cm_{model_name.lower().replace(' ', '_')}.png")
     if save:
@@ -60,9 +61,11 @@ def plot_roc_curve(y_true, y_proba, model_name: str, save: bool = True) -> str:
     ax.plot(fpr, tpr, color="#1f77b4", lw=2, label=f"AUC = {auc:.3f}")
     ax.plot([0, 1], [0, 1], "k--", lw=1, label="Random")
     ax.fill_between(fpr, tpr, alpha=0.1, color="#1f77b4")
-    ax.set_xlabel("False Positive Rate"); ax.set_ylabel("True Positive Rate")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
     ax.set_title(f"ROC Curve — {model_name}")
-    ax.legend(loc="lower right"); plt.tight_layout()
+    ax.legend(loc="lower right")
+    plt.tight_layout()
     path = os.path.join(PLOTS_DIR, f"roc_{model_name.lower().replace(' ', '_')}.png")
     if save:
         fig.savefig(path, dpi=100)
@@ -82,7 +85,8 @@ def plot_feature_importance(model, feature_names: list, model_name: str, save: b
     fig, ax = plt.subplots(figsize=(8, 5))
     bars = ax.barh(sorted_features[::-1], sorted_importances[::-1],
                    color="#2ecc71", edgecolor="white")
-    ax.set_xlabel("Feature Importance"); ax.set_title(f"Feature Importance — {model_name}")
+    ax.set_xlabel("Feature Importance")
+    ax.set_title(f"Feature Importance — {model_name}")
     for bar, val in zip(bars, sorted_importances[::-1]):
         ax.text(bar.get_width() + 0.002, bar.get_y() + bar.get_height() / 2,
                 f"{val:.3f}", va="center", fontsize=8)

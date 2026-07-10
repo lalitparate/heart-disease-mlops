@@ -4,32 +4,31 @@ Trains Logistic Regression, Random Forest, and XGBoost classifiers.
 Performs hyperparameter tuning and logs everything to MLflow.
 """
 
-import os
-import warnings
-import joblib
-import numpy as np
-import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import seaborn as sns
-import mlflow
-import mlflow.sklearn
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import (
-    train_test_split, cross_val_score, StratifiedKFold, GridSearchCV
+from src.preprocess import (
+    load_data,
+    split_features_target,
+    fit_and_save_preprocessor,
 )
+from xgboost import XGBClassifier
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score,
     f1_score, roc_auc_score, confusion_matrix, roc_curve
 )
-from xgboost import XGBClassifier
-
-from src.preprocess import (
-    load_data, split_features_target,
-    fit_and_save_preprocessor, build_preprocessor, ALL_FEATURES
+from sklearn.model_selection import (
+    train_test_split, cross_val_score, StratifiedKFold, GridSearchCV
 )
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+import mlflow.sklearn
+import mlflow
+import seaborn as sns
+import matplotlib.pyplot as plt
+import os
+import warnings
+import joblib
+import matplotlib
+matplotlib.use("Agg")
+
 
 warnings.filterwarnings("ignore")
 
@@ -64,7 +63,8 @@ def save_confusion_matrix(y_test, y_pred, name):
                 xticklabels=["No Disease", "Disease"],
                 yticklabels=["No Disease", "Disease"], ax=ax)
     ax.set_title(f"Confusion Matrix — {name}")
-    ax.set_ylabel("Actual"); ax.set_xlabel("Predicted")
+    ax.set_ylabel("Actual")
+    ax.set_xlabel("Predicted")
     plt.tight_layout()
     path = os.path.join(PLOTS_DIR, f"cm_{name.lower().replace(' ', '_')}.png")
     fig.savefig(path, dpi=100)
@@ -78,9 +78,11 @@ def save_roc_curve(y_test, y_proba, name):
     fig, ax = plt.subplots(figsize=(5, 4))
     ax.plot(fpr, tpr, label=f"AUC = {auc:.3f}", lw=2)
     ax.plot([0, 1], [0, 1], "k--", lw=1)
-    ax.set_xlabel("False Positive Rate"); ax.set_ylabel("True Positive Rate")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
     ax.set_title(f"ROC Curve — {name}")
-    ax.legend(); plt.tight_layout()
+    ax.legend()
+    plt.tight_layout()
     path = os.path.join(PLOTS_DIR, f"roc_{name.lower().replace(' ', '_')}.png")
     fig.savefig(path, dpi=100)
     plt.close(fig)
@@ -201,10 +203,10 @@ def train():
 
     # 5. Save best model
     joblib.dump(best_model, BEST_PATH)
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  Best model : {best_name}  (ROC-AUC = {best_auc:.4f})")
     print(f"  Saved      → {BEST_PATH}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     return best_model
 
 

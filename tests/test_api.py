@@ -3,6 +3,15 @@ Unit tests for the FastAPI application.
 Run: pytest tests/test_api.py -v
 """
 
+from src.preprocess import ALL_FEATURES, build_preprocessor
+import pandas as pd
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import LogisticRegression
+from unittest.mock import patch, MagicMock
+from fastapi.testclient import TestClient
 import os
 import sys
 import pytest
@@ -11,17 +20,8 @@ import joblib
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from fastapi.testclient import TestClient
 
 # ── Patch model/preprocessor so tests run without trained files ───────────────
-from unittest.mock import patch, MagicMock
-from sklearn.linear_model import LogisticRegression
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.impute import SimpleImputer
-import pandas as pd
-from src.preprocess import ALL_FEATURES, NUMERIC_FEATURES, CATEGORICAL_FEATURES, build_preprocessor
 
 # Build a tiny fitted mock
 _np = __import__("numpy")
@@ -87,9 +87,9 @@ def test_predict_valid_payload(client):
     r = client.post("/predict", json=VALID_PAYLOAD)
     assert r.status_code == 200
     data = r.json()
-    assert "prediction"  in data
+    assert "prediction" in data
     assert "probability" in data
-    assert "label"       in data
+    assert "label" in data
     assert data["prediction"] in [0, 1]
     assert 0.0 <= data["probability"] <= 1.0
 
@@ -129,9 +129,9 @@ def test_batch_predict_empty_returns_422(client):
 def test_batch_predict_structure(client):
     r = client.post("/predict/batch", json={"records": [VALID_PAYLOAD]})
     pred = r.json()["predictions"][0]
-    assert "prediction"  in pred
+    assert "prediction" in pred
     assert "probability" in pred
-    assert "label"       in pred
+    assert "label" in pred
 
 
 # ── 404 ───────────────────────────────────────────────────────────────────────

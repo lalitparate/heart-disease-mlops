@@ -4,7 +4,6 @@ Inference utilities — load model + preprocessor and run predictions.
 
 import os
 import joblib
-import numpy as np
 import pandas as pd
 from src.preprocess import load_preprocessor, ALL_FEATURES
 

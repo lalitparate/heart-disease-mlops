@@ -3,14 +3,6 @@ Unit tests for preprocessing pipeline.
 Run: pytest tests/ -v
 """
 
-import os
-import sys
-import pytest
-import numpy as np
-import pandas as pd
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 from src.preprocess import (
     build_preprocessor,
     load_data,
@@ -20,6 +12,14 @@ from src.preprocess import (
     CATEGORICAL_FEATURES,
     TARGET_COL,
 )
+import os
+import sys
+import pytest
+import numpy as np
+import pandas as pd
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 

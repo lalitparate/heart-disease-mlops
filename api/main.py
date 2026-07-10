@@ -2,7 +2,6 @@
 FastAPI application — /predict endpoint with Prometheus monitoring.
 """
 
-import os
 import time
 import logging
 from contextlib import asynccontextmanager
