@@ -25,20 +25,20 @@ def sample_df():
     np.random.seed(42)
     n = 50
     return pd.DataFrame({
-        "age":      np.random.randint(30, 75, n).astype(float),
-        "sex":      np.random.randint(0, 2, n).astype(float),
-        "cp":       np.random.randint(0, 4, n).astype(float),
+        "age": np.random.randint(30, 75, n).astype(float),
+        "sex": np.random.randint(0, 2, n).astype(float),
+        "cp": np.random.randint(0, 4, n).astype(float),
         "trestbps": np.random.randint(90, 200, n).astype(float),
-        "chol":     np.random.randint(150, 400, n).astype(float),
-        "fbs":      np.random.randint(0, 2, n).astype(float),
-        "restecg":  np.random.randint(0, 3, n).astype(float),
-        "thalach":  np.random.randint(80, 200, n).astype(float),
-        "exang":    np.random.randint(0, 2, n).astype(float),
-        "oldpeak":  np.random.uniform(0, 5, n).round(1),
-        "slope":    np.random.randint(0, 3, n).astype(float),
-        "ca":       np.random.randint(0, 4, n).astype(float),
-        "thal":     np.random.choice([1.0, 2.0, 3.0], n),
-        "target":   np.random.randint(0, 2, n),
+        "chol": np.random.randint(150, 400, n).astype(float),
+        "fbs": np.random.randint(0, 2, n).astype(float),
+        "restecg": np.random.randint(0, 3, n).astype(float),
+        "thalach": np.random.randint(80, 200, n).astype(float),
+        "exang": np.random.randint(0, 2, n).astype(float),
+        "oldpeak": np.random.uniform(0, 5, n).round(1),
+        "slope": np.random.randint(0, 3, n).astype(float),
+        "ca": np.random.randint(0, 4, n).astype(float),
+        "thal": np.random.choice([1.0, 2.0, 3.0], n),
+        "target": np.random.randint(0, 2, n),
     })
 
 
@@ -46,8 +46,8 @@ def sample_df():
 def sample_df_with_missing(sample_df):
     """DataFrame with deliberate NaN values in several columns."""
     df = sample_df.copy()
-    df.loc[0, "ca"]      = np.nan
-    df.loc[1, "thal"]    = np.nan
+    df.loc[0, "ca"] = np.nan
+    df.loc[1, "thal"] = np.nan
     df.loc[2, "trestbps"] = np.nan
     return df
 
@@ -80,24 +80,24 @@ def test_split_features_target(sample_df):
 
 def test_preprocessor_output_shape(sample_df):
     X, _ = split_features_target(sample_df)
-    pre  = build_preprocessor()
-    out  = pre.fit_transform(X)
+    pre = build_preprocessor()
+    out = pre.fit_transform(X)
     assert out.shape == (50, len(ALL_FEATURES))
 
 
 def test_preprocessor_no_nans_after_fit(sample_df_with_missing):
     X, _ = split_features_target(sample_df_with_missing)
-    pre  = build_preprocessor()
-    out  = pre.fit_transform(X)
+    pre = build_preprocessor()
+    out = pre.fit_transform(X)
     assert not np.isnan(out).any(), "Preprocessor should impute all NaN values"
 
 
 def test_preprocessor_transform_single_row(sample_df):
     X, _ = split_features_target(sample_df)
-    pre  = build_preprocessor()
+    pre = build_preprocessor()
     pre.fit(X)
     single = X.iloc[[0]]
-    out    = pre.transform(single)
+    out = pre.transform(single)
     assert out.shape == (1, len(ALL_FEATURES))
     assert not np.isnan(out).any()
 
