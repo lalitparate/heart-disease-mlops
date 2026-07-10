@@ -5,18 +5,11 @@ Run: pytest tests/test_api.py -v
 
 from src.preprocess import ALL_FEATURES, build_preprocessor
 import pandas as pd
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LogisticRegression
-from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
 import os
 import sys
 import pytest
-import numpy as np
-import joblib
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
